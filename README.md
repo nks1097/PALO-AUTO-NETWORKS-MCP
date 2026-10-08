@@ -148,6 +148,10 @@ py -m pip install -r requirements.txt
 > ```bash
 > pip install "mcp<2"
 > ```
+ou tente
+> ```bash
+> python -m pip install "mcp<2"
+> ```
 
 ---
 
