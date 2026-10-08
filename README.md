@@ -70,10 +70,17 @@ Firewall tools: 95
 
 Este projeto foi construído para que qualquer pessoa (administradores de rede, analistas de SOC, engenheiros de segurança ou entusiastas) possa conectar uma IA ao seu firewall Palo Alto Networks em poucos minutos.
 
-### Pré-requisitos
-- **Python 3.12 ou superior** instalado na máquina ([python.org](https://www.python.org/downloads/)) ou **Docker**.
-- Conectividade de rede (HTTPS / porta 443) com o firewall ou Panorama.
-- Uma **Chave de API (API Key)** do PAN-OS.
+### 📋 O que a pessoa precisa ter instalado no computador
+
+Antes de começar, certifique-se de ter os seguintes programas instalados:
+
+| Software | Versão Mínima | Para que serve | Onde baixar |
+| :--- | :--- | :--- | :--- |
+| **Python** | `3.12+` | Executar o servidor MCP | [python.org/downloads](https://www.python.org/downloads/) *(Marque a opção **"Add python.exe to PATH"** no instalador do Windows)* |
+| **Git** | Qualquer recente | Baixar o código do repositório | [git-scm.com](https://git-scm.com/downloads) |
+| **Cliente de IA** | Qualquer | Conversar com a IA e usar as ferramentas | [Claude Desktop](https://claude.ai/download), [Cursor](https://cursor.com), [VS Code](https://code.visualstudio.com) ou Antigravity IDE |
+
+> 💡 **Não quer instalar Python?** Você também pode rodar diretamente via **Docker** usando o `docker-compose.yml` incluso!
 
 ---
 
@@ -97,23 +104,34 @@ O firewall responderá com um XML contendo a sua chave:
 
 ---
 
-### Passo 2: Clonar o Repositório e Instalar
+### Passo 2: Clonar o Repositório e Instalar as Dependências
 
-Abra o terminal e execute:
+Abra o seu terminal (Prompt de Comando, PowerShell ou Terminal do Linux/Mac) e execute:
 
 ```bash
-# 1. Clonar o projeto
+# 1. Clonar o projeto do GitHub
 git clone https://github.com/nks1097/PALO-AUTO-NETWORKS-MCP.git
 
-# 2. Entrar na pasta
+# 2. Entrar na pasta do projeto
 cd PALO-AUTO-NETWORKS-MCP
 
-# 3. Instalar as dependências (recomendado usar ambiente virtual)
+# 3. (Recomendado) Criar e ativar um ambiente virtual isolado:
+# No Windows:
+python -m venv .venv
+.venv\Scripts\activate
+
+# No Linux / macOS:
+python3 -m venv .venv
+source .venv/bin/activate
+
+# 4. Instalar todas as bibliotecas necessárias com 1 comando:
 pip install -r requirements.txt
 
 # se não conseguir tente
 py -m pip install -r requirements.txt
 ```
+
+*(O comando `pip install -r requirements.txt` instala automaticamente o SDK oficial do MCP, bibliotecas de conexão assíncrona com o firewall, validação de regras de rede e utilitários de segurança).*
 
 ---
 
