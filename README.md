@@ -471,6 +471,6 @@ Resultado dos testes: **25 passed in 2.12s**.
 Linter: **All checks passed!**
 
 
-### VIDEO DE CONFIGURAÇÃO DE FORMA SIMPLIFICADA USANDO GRATUITAMENTE LLM LOCAL COM LM STUDIO
+### VIDEO DE CONFIGURAÇÃO DE FORMA SIMPLIFICADA
 
  ▶️ **[Clique aqui para assistir ao vídeo completo no Google Drive Assiste em Full Hd (1080P)](https://drive.google.com/file/d/1vqmKhCl7NAQI3h-63gqNbUjogTLZr_By/view?usp=drive_link)**
