@@ -90,6 +90,11 @@ Caso ainda não tenha uma API Key gerada, você pode gerá-la facilmente pelo se
 **No Navegador ou via curl:**
 ```bash
 curl -k "https://<SEU_FIREWALL_IP>/api/?type=keygen&user=<SEU_USUARIO>&password=<SUA_SENHA>"
+
+```
+** ou tente com esse comando**
+```bash
+curl.exe -k "https://<SEU_FIREWALL_IP>/api/?type=keygen&user=<SEU_USUARIO>&password=<SUA_SENHA>"
 ```
 
 O firewall responderá com um XML contendo a sua chave:
