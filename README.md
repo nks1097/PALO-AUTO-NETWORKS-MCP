@@ -110,6 +110,9 @@ cd PALO-AUTO-NETWORKS-MCP
 
 # 3. Instalar as dependências (recomendado usar ambiente virtual)
 pip install -r requirements.txt
+
+# se não conseguir tente
+py -m pip install -r requirements.txt
 ```
 
 ---
