@@ -74,12 +74,20 @@ Firewall tools: 95
 - Chave de API do PAN-OS (`PANOS_API_KEY`)
 - Conectividade de rede na porta HTTPS (443) do firewall ou Panorama
 
-### Instalação Local
+### Instalação das Dependências (em um novo computador)
 
+Se você estiver configurando o projeto pela primeira vez ou em um novo ambiente, entre na pasta do projeto e instale as dependências com um dos comandos abaixo:
+
+**Opção 1: Instalação direta (Mais simples)**
 ```bash
-cd paloalto-mcp
+pip install -r requirements.txt
+```
+
+**Opção 2: Instalação em modo de desenvolvimento (Editável)**
+```bash
 pip install -e ".[dev]"
 ```
+*(O modo editável `-e` faz com que qualquer alteração que você fizer no código seja refletida imediatamente sem precisar reinstalar o pacote).*
 
 ### Configuração (.env)
 
