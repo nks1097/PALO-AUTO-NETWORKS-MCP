@@ -66,75 +66,102 @@ Firewall tools: 95
 
 ---
 
-## 2. Instalação e Execução
+## 2. Guia de Início Rápido (Quickstart)
 
-### Requisitos
+Este projeto foi construído para que qualquer pessoa (administradores de rede, analistas de SOC, engenheiros de segurança ou entusiastas) possa conectar uma IA ao seu firewall Palo Alto Networks em poucos minutos.
 
-- Python 3.12+
-- Chave de API do PAN-OS (`PANOS_API_KEY`)
-- Conectividade de rede na porta HTTPS (443) do firewall ou Panorama
+### Pré-requisitos
+- **Python 3.12 ou superior** instalado na máquina ([python.org](https://www.python.org/downloads/)) ou **Docker**.
+- Conectividade de rede (HTTPS / porta 443) com o firewall ou Panorama.
+- Uma **Chave de API (API Key)** do PAN-OS.
 
-### Instalação das Dependências (em um novo computador)
+---
 
-Se você estiver configurando o projeto pela primeira vez ou em um novo ambiente, entre na pasta do projeto e instale as dependências com um dos comandos abaixo:
+### Passo 1: Como gerar sua API Key no Palo Alto
+Caso ainda não tenha uma API Key gerada, você pode gerá-la facilmente pelo seu navegador ou terminal. Substitua `SEU_FIREWALL_IP`, `SEU_USUARIO` e `SUA_SENHA`:
 
-**Opção 1: Instalação direta (Mais simples)**
+**No Navegador ou via curl:**
 ```bash
+curl -k "https://<SEU_FIREWALL_IP>/api/?type=keygen&user=<SEU_USUARIO>&password=<SUA_SENHA>"
+```
+
+O firewall responderá com um XML contendo a sua chave:
+```xml
+<response status="success">
+  <result>
+    <key>LUFRPT1H...sua_chave_aqui...</key>
+  </result>
+</response>
+```
+> Copie o conteúdo dentro da tag `<key>` e guarde-o com segurança.
+
+---
+
+### Passo 2: Clonar o Repositório e Instalar
+
+Abra o terminal e execute:
+
+```bash
+# 1. Clonar o projeto
+git clone https://github.com/nks1097/PALO-AUTO-NETWORKS-MCP.git
+
+# 2. Entrar na pasta
+cd PALO-AUTO-NETWORKS-MCP
+
+# 3. Instalar as dependências (recomendado usar ambiente virtual)
 pip install -r requirements.txt
-```
-
-**Opção 2: Instalação em modo de desenvolvimento (Editável)**
-```bash
-pip install -e ".[dev]"
-```
-*(O modo editável `-e` faz com que qualquer alteração que você fizer no código seja refletida imediatamente sem precisar reinstalar o pacote).*
-
-### Configuração (.env)
-
-Copie o arquivo de exemplo e defina suas credenciais:
-
-```bash
-cp .env.example .env
-```
-
-Configuração de exemplo:
-
-```env
-PANOS_HOST=https://192.168.1.1
-PANOS_API_KEY=SUA_API_KEY_DO_PANOS_AQUI
-PANOS_VERIFY_SSL=false
-PANOS_TIMEOUT=30
-PANOS_DEFAULT_VSYS=vsys1
-
-# Permissões do Servidor
-ALLOW_WRITE_OPERATIONS=true
-ALLOW_COMMIT=false
-MCP_REQUIRE_CONFIRMATION=true
-LOG_LEVEL=INFO
-```
-
-### Executando o Servidor MCP
-
-```bash
-python -m paloalto_mcp.server
 ```
 
 ---
 
-## 3. Configuração no Cliente MCP (ex: Claude Desktop ou Antigravity IDE)
+### Passo 3: Configurar as Credenciais (.env)
 
-Adicione ao arquivo `mcp_config.json`:
+Copie o arquivo de modelo `.env.example` para `.env`:
+
+```bash
+# No Windows (PowerShell):
+copy .env.example .env
+
+# No Linux / macOS:
+cp .env.example .env
+```
+
+Abra o arquivo `.env` e preencha com os dados do seu firewall:
+
+```env
+PANOS_HOST=https://192.168.1.1
+PANOS_API_KEY=sua_chave_gerada_no_passo_1
+PANOS_VERIFY_SSL=false
+ALLOW_WRITE_OPERATIONS=true
+ALLOW_COMMIT=false
+LOG_LEVEL=INFO
+```
+
+---
+
+## 3. Conectando nos seus Clientes de IA Favoritos
+
+### Opção A: No Claude Desktop
+
+Abra o arquivo de configuração do Claude Desktop:
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+
+Adicione a seção `mcpServers`:
 
 ```json
 {
   "mcpServers": {
     "paloalto": {
       "command": "python",
-      "args": ["-m", "paloalto_mcp.server"],
-      "cwd": "/caminho/para/paloalto-mcp",
+      "args": [
+        "-m",
+        "paloalto_mcp.server"
+      ],
+      "cwd": "C:\\caminho\\completo\\para\\PALO-AUTO-NETWORKS-MCP",
       "env": {
         "PANOS_HOST": "https://192.168.1.1",
-        "PANOS_API_KEY": "SUA_API_KEY_DO_PANOS_AQUI",
+        "PANOS_API_KEY": "sua_chave_aqui",
         "PANOS_VERIFY_SSL": "false",
         "ALLOW_WRITE_OPERATIONS": "true",
         "ALLOW_COMMIT": "false"
@@ -146,7 +173,79 @@ Adicione ao arquivo `mcp_config.json`:
 
 ---
 
-## 4. As 100 Ferramentas MCP Implementadas
+### Opção B: No Cursor / Antigravity IDE / VS Code
+
+No arquivo de configuração de MCP (`settings.json` ou `mcp_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "paloalto": {
+      "command": "python",
+      "args": [
+        "C:\\caminho\\completo\\para\\PALO-AUTO-NETWORKS-MCP\\paloalto-mcp-bridge.py"
+      ],
+      "cwd": "C:\\caminho\\completo\\para\\PALO-AUTO-NETWORKS-MCP",
+      "env": {
+        "PANOS_HOST": "https://192.168.1.1",
+        "PANOS_API_KEY": "sua_chave_aqui",
+        "PANOS_VERIFY_SSL": "false",
+        "ALLOW_WRITE_OPERATIONS": "true",
+        "ALLOW_COMMIT": "false"
+      }
+    }
+  }
+}
+```
+
+---
+
+### Opção C: Executar via Docker (Sem instalar Python)
+
+Se preferir rodar em container sem instalar dependências no seu sistema operacional:
+
+```bash
+docker compose up -d
+```
+
+---
+
+## 4. Exemplos de Prompts Prontos para Usar
+
+Assim que o servidor estiver conectado à IA, você pode conversar em português natural:
+
+- 📊 **Status & Saúde**:
+  > *"Qual o modelo, versão do PAN-OS e status de saúde do meu firewall?"*
+  > *"Verifique as licenças instaladas e se há alguma prestes a expirar."*
+
+- 🛡️ **Políticas & Regras**:
+  > *"Quais regras de segurança eu tenho ativas no firewall?"*
+  > *"Crie uma regra bloqueando todos os sites de apostas e mova para o topo."*
+  > *"Analise a segurança da regra Permitir-Internet e aponte vulnerabilidades."*
+
+- 🌐 **Rede & Serviços**:
+  > *"Crie um servidor DHCP na interface interna ethernet1/2 com o range 10.10.10.50 a 10.10.10.200."*
+  > *"Liste as interfaces físicas e seus respectivos endereços IP e zonas."*
+
+- 🔍 **Monitoramento & Sessões**:
+  > *"Mostre o total de sessões ativas e as principais aplicações consumindo banda."*
+  > *"Consulte os logs de tráfego recentes da zona Trust para Untrust."*
+
+---
+
+## 5. Dicionário de Variáveis de Ambiente
+
+| Variável | Padrão | Descrição |
+| :--- | :--- | :--- |
+| `PANOS_HOST` | `https://192.168.1.1` | IP ou FQDN com HTTPS do firewall ou Panorama. |
+| `PANOS_API_KEY` | *(Obrigatório)* | Chave de autenticação da API do PAN-OS. |
+| `PANOS_VERIFY_SSL` | `false` | Se `false`, ignora avisos de certificado autoassinado em labs. |
+| `ALLOW_WRITE_OPERATIONS` | `true` | Habilita ferramentas de criação e edição de regras/objetos. |
+| `ALLOW_COMMIT` | `false` | Trava de segurança: se `false`, impede que a IA aplique commits no dataplane sem permissão expressa. |
+| `MCP_REQUIRE_CONFIRMATION`| `true` | Exige parâmetro `confirm=true` para ações destrutivas (excluir regras, reboot). |
+| `PANOS_DEFAULT_VSYS` | `vsys1` | Virtual System padrão a ser gerenciado. |
+
+## 6. As 100 Ferramentas MCP Implementadas
 
 ### GRUPO A — SYSTEM / DEVICE (1 a 10)
 1. `panos_get_system_info`: Obtém hostname, serial, modelo, versão do PAN-OS e uptime.
