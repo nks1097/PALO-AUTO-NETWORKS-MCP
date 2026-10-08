@@ -133,6 +133,14 @@ py -m pip install -r requirements.txt
 
 *(O comando `pip install -r requirements.txt` instala automaticamente o SDK oficial do MCP, bibliotecas de conexão assíncrona com o firewall, validação de regras de rede e utilitários de segurança).*
 
+> [!IMPORTANT]
+> **Atenção à versão do MCP (`mcp < 2`):**
+> Este servidor utiliza a arquitetura FastMCP da versão **1.x** do SDK MCP. Versões `2.x+` possuem quebras de compatibilidade que impedem o handshake do servidor.
+> O arquivo `requirements.txt` já vem protegido e fixado com `mcp>=1.2.0,<2.0.0`. Caso o seu Python já possua a versão `2.x` instalada globalmente, force a versão compatível com:
+> ```bash
+> pip install "mcp<2"
+> ```
+
 ---
 
 ### Passo 3: Configurar as Credenciais (.env)
