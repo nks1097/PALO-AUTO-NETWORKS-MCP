@@ -107,6 +107,7 @@ O firewall responderá com um XML contendo a sua chave:
 ```
 > Copie o conteúdo dentro da tag `<key>` e guarde-o com segurança.
 
+ * imagem de Exemplo
  ![imagem1](imagens/1.png)
 
 ---
@@ -172,6 +173,7 @@ ALLOW_WRITE_OPERATIONS=true
 ALLOW_COMMIT=false
 LOG_LEVEL=INFO
 ```
+* imagem de Exemplo
  ![imagem2](imagens/2.png)
 ---
 
@@ -233,7 +235,7 @@ No arquivo de configuração de MCP (`settings.json` ou `mcp_config.json`):
   }
 }
 ```
-
+* imagem de Exemplo
  ![imagem3](/imagens/3.png)
 
 
